@@ -53,9 +53,10 @@ const struct retro_input_descriptor MelonDsDs::input_descriptors[] = {
         {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_L,      "L"},
         {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_X,      "X"},
         {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_Y,      "Y"},
-        {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_L2,     "Microphone"},
+        {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_L2,     "Previous Screen Layout"},
         {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_R2,     "Next Screen Layout"},
-        {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_L3,     "Close Lid"},
+     // {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_L3,     "Close Lid"},
+        {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_L3,     "Microphone"},
         {0, RETRO_DEVICE_JOYPAD, 0,                               RETRO_DEVICE_ID_JOYPAD_R3,     "Touch Joystick"},
         {0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X,      "Touch Joystick Horizontal"},
         {0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y,      "Touch Joystick Vertical"},
@@ -129,10 +130,16 @@ void MelonDsDs::HandleInput(melonDS::NDS& nds, InputState& inputState, ScreenLay
         nds.ReleaseScreen();
     }
 
-    if (inputState.CycleLayoutPressed()) {
+    if (inputState.CycleNextLayoutPressed()) {
         // If the user wants to change the active screen layout...
         screenLayout.NextLayout(); // ...update the screen layout to the next in the sequence.
         retro::debug("Switched to screen layout {} of {}", screenLayout.LayoutIndex() + 1, screenLayout.NumberOfLayouts());
+    }
+
+    if (inputState.CyclePreviousLayoutPressed()) {
+        // If the user wants to change the active screen layout...
+        screenLayout.PreviousLayout(); // ...update the screen layout to the previous in the sequence.
+        retro::debug("Switched to screen layout {} of {}", screenLayout.LayoutIndex() - 1, screenLayout.NumberOfLayouts());
     }
 }
 
@@ -181,14 +188,17 @@ void MelonDsDs::InputState::Update(const ScreenLayoutData& screen_layout_data) n
 
     consoleButtons = ndsInputBits;
 
-    previousToggleLidButton = toggleLidButton;
-    toggleLidButton = retroInputBits & (1 << RETRO_DEVICE_ID_JOYPAD_L3);
+    // previousToggleLidButton = toggleLidButton;
+    // toggleLidButton = retroInputBits & (1 << RETRO_DEVICE_ID_JOYPAD_L3);
 
     previousMicButton = micButton;
-    micButton = retroInputBits & (1 << RETRO_DEVICE_ID_JOYPAD_L2);
+    micButton = retroInputBits & (1 << RETRO_DEVICE_ID_JOYPAD_L3);
 
-    previousCycleLayoutButton = cycleLayoutButton;
-    cycleLayoutButton = retroInputBits & (1 << RETRO_DEVICE_ID_JOYPAD_R2);
+    previousCyclePreviousLayoutButton = cyclePreviousLayoutButton;
+    cyclePreviousLayoutButton = retroInputBits & (1 << RETRO_DEVICE_ID_JOYPAD_L2);
+
+    previousCycleNextLayoutButton = cycleNextLayoutButton;
+    cycleNextLayoutButton = retroInputBits & (1 << RETRO_DEVICE_ID_JOYPAD_R2);
 
     previousPointerTouchPosition = pointerTouchPosition;
     previousIsPointerTouching = isPointerTouching;

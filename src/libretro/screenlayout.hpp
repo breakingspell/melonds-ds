@@ -147,6 +147,13 @@ namespace MelonDsDs {
             if (oldLayout != Layout()) _dirty = true;
         }
 
+        void PreviousLayout() noexcept {
+            ScreenLayout oldLayout = Layout();
+            _layoutIndex = (_layoutIndex - 1) % _numberOfLayouts;
+
+            if (oldLayout != Layout()) _dirty = true;
+        }
+
         HybridSideScreenDisplay HybridSmallScreenLayout() const noexcept { return hybridSmallScreenLayout; }
         void HybridSmallScreenLayout(HybridSideScreenDisplay _layout) noexcept {
             if (IsHybridLayout(Layout()) && _layout != hybridSmallScreenLayout) _dirty = true;

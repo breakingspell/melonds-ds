@@ -46,9 +46,12 @@ namespace MelonDsDs {
         [[nodiscard]] glm::ivec2 JoystickTouchPosition() const noexcept { return joystickCursorPosition; }
         [[nodiscard]] glm::i16vec2 PointerInput() const noexcept { return pointerRawPosition; }
         [[nodiscard]] glm::ivec2 HybridTouchPosition() const noexcept { return hybridTouchPosition; }
-        [[nodiscard]] bool CycleLayoutDown() const noexcept { return cycleLayoutButton; }
-        [[nodiscard]] bool CycleLayoutPressed() const noexcept { return cycleLayoutButton && !previousCycleLayoutButton; }
-        [[nodiscard]] bool CycleLayoutReleased() const noexcept { return !cycleLayoutButton && previousCycleLayoutButton; }
+        [[nodiscard]] bool CyclePreviousLayoutDown() const noexcept { return cyclePreviousLayoutButton; }
+        [[nodiscard]] bool CyclePreviousLayoutPressed() const noexcept { return cyclePreviousLayoutButton && !previousCyclePreviousLayoutButton; }
+        [[nodiscard]] bool CyclePreviousLayoutReleased() const noexcept { return !cyclePreviousLayoutButton && previousCyclePreviousLayoutButton; }
+        [[nodiscard]] bool CycleNextLayoutDown() const noexcept { return cycleNextLayoutButton; }
+        [[nodiscard]] bool CycleNextLayoutPressed() const noexcept { return cycleNextLayoutButton && !previousCycleNextLayoutButton; }
+        [[nodiscard]] bool CycleNextLayoutReleased() const noexcept { return !cycleNextLayoutButton && previousCycleNextLayoutButton; }
         [[nodiscard]] bool MicButtonDown() const noexcept { return micButton; }
         [[nodiscard]] bool MicButtonPressed() const noexcept { return micButton && !previousMicButton; }
         [[nodiscard]] bool MicButtonReleased() const noexcept { return !micButton && previousMicButton; }
@@ -101,8 +104,10 @@ namespace MelonDsDs {
         bool previousToggleLidButton;
         bool micButton;
         bool previousMicButton;
-        bool cycleLayoutButton;
-        bool previousCycleLayoutButton;
+        bool cyclePreviousLayoutButton;
+        bool previousCyclePreviousLayoutButton;
+        bool cycleNextLayoutButton;
+        bool previousCycleNextLayoutButton;
         bool joystickTouchButton;
         bool previousJoystickTouchButton;
         uint32_t consoleButtons;
